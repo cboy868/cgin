@@ -101,15 +101,6 @@ func (r *RouterGroup) Use(middlewares ...func(c *Context)) gin.IRoutes {
 	return r.RouterGroup.Use(rMiddlewares...)
 }
 
-// Hello 打印Hello!+Context中的ID
-func (c *Context) Hello() {
-	v := make(map[string]string)
-	v["a"] = "b"
-	c.Success(v)
-
-	//c.Error("1", "err", v)
-}
-
 func (c *Context) Success(data interface{}) {
 	c.JSON(http.StatusOK, gin.H{
 		"code":    0,
