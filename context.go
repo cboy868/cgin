@@ -109,10 +109,10 @@ func (c *Context) Success(data interface{}) {
 	})
 }
 
-func (c *Context) Error(code string, err string, data ...interface{}) {
+func (c *Context) Error(code interface{}, err interface{}, data ...interface{}) {
 	c.JSON(http.StatusOK, gin.H{
 		"code":    code,
-		"message": "Error:" + err,
+		"message": err,
 		"data":    data,
 	})
 }
