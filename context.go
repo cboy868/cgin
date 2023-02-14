@@ -93,13 +93,15 @@ func (r *RouterGroup) POST(relativePath string, handlers ...func(c *Context)) gi
 }
 
 // Use 拓展中间件注册
-func (r *RouterGroup) Use(middlewares ...func(c *Context)) gin.IRoutes {
+func (r *RouterGroup) Use(middlewares ...func(c *Context))*RouterGroup {
 	rMiddlewares := make([]gin.HandlerFunc, 0)
 	for _, middleware := range middlewares {
 		rMiddlewares = append(rMiddlewares, handleFunc(middleware))
 	}
-	return r.RouterGroup.Use(rMiddlewares...)
+	r.RouterGroup.Use(rMiddlewares...)
+	return &RouterGroup{r.RouterGroup}
 }
+
 
 func (c *Context) Success(data interface{}) {
 	c.JSON(http.StatusOK, gin.H{
