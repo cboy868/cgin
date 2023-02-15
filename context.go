@@ -92,8 +92,35 @@ func (r *RouterGroup) POST(relativePath string, handlers ...func(c *Context)) gi
 	return r.RouterGroup.POST(relativePath, rHandles...)
 }
 
+// DELETE 删除
+func (r *RouterGroup) DELETE(relativePath string, handlers ...func(c *Context)) gin.IRoutes {
+	rHandles := make([]gin.HandlerFunc, 0)
+	for _, handle := range handlers {
+		rHandles = append(rHandles, handleFunc(handle))
+	}
+	return r.RouterGroup.DELETE(relativePath, rHandles...)
+}
+
+// PUT 更新请求
+func (r *RouterGroup) PUT(relativePath string, handlers ...func(c *Context)) gin.IRoutes {
+	rHandles := make([]gin.HandlerFunc, 0)
+	for _, handle := range handlers {
+		rHandles = append(rHandles, handleFunc(handle))
+	}
+	return r.RouterGroup.PUT(relativePath, rHandles...)
+}
+
+// Any 任意请求
+func (r *RouterGroup) Any(relativePath string, handlers ...func(c *Context)) gin.IRoutes {
+	rHandles := make([]gin.HandlerFunc, 0)
+	for _, handle := range handlers {
+		rHandles = append(rHandles, handleFunc(handle))
+	}
+	return r.RouterGroup.Any(relativePath, rHandles...)
+}
+
 // Use 拓展中间件注册
-func (r *RouterGroup) Use(middlewares ...func(c *Context))*RouterGroup {
+func (r *RouterGroup) Use(middlewares ...func(c *Context)) *RouterGroup {
 	rMiddlewares := make([]gin.HandlerFunc, 0)
 	for _, middleware := range middlewares {
 		rMiddlewares = append(rMiddlewares, handleFunc(middleware))
@@ -101,7 +128,6 @@ func (r *RouterGroup) Use(middlewares ...func(c *Context))*RouterGroup {
 	r.RouterGroup.Use(rMiddlewares...)
 	return &RouterGroup{r.RouterGroup}
 }
-
 
 func (c *Context) Success(data interface{}) {
 	c.JSON(http.StatusOK, gin.H{
